@@ -1,6 +1,6 @@
 import React from 'react'
 
-class TodoForm extends React.Component {
+class TaskForm extends React.Component {
   state = { input: '' }
 
   handleChange = event => {
@@ -8,15 +8,21 @@ class TodoForm extends React.Component {
   }
 
   handleSubmit = event => {
+    // Stop the form from refreshing the page
     event.preventDefault()
-    this.props.addTask(this.state.input)
-    this.setState({ input: '' })
+
+    // Don't add a task if it's only whitespace
+    if (this.state.input.trim().length) {
+      this.props.addTask(this.state.input)
+      this.setState({ input: '' })
+    }
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <input
+          type="search"
           value={this.state.input}
           onChange={this.handleChange}
           placeholder="Add task..."
@@ -26,4 +32,4 @@ class TodoForm extends React.Component {
   }
 }
 
-export default TodoForm
+export default TaskForm
