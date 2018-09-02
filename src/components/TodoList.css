@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+html,
+body {
+  background: #e2e1e0;
+}
+
+.todo__wrapper * {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.todo__wrapper {
+  background: #fff;
+  max-width: 600px;
+  font-size: 32px;
+  margin: 24px auto;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  text-align: left;
+}
+
+.todo__wrapper > h2 {
+  margin: 0;
+}
+
+.todo__wrapper > * + *::before {
+  border: 1px solid;
+  border-style: inset;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  content: '';
+  display: block;
+}
+
+.todo__empty_task_list::after {
+  content: 'No tasks';
+  color: rgba(0, 0, 0, 0.54);
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.todo__wrapper input {
+  border: none;
+  font-size: 32px;
+  outline: none;
+  width: 100%;
+}
+
+.todo__task {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo__task > span {
+  text-decoration: none;
+  cursor: pointer;
+}
