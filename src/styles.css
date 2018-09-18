@@ -3,6 +3,7 @@
 html,
 body {
   background: #e2e1e0;
+  margin: 30px 20px;
 }
 
 .todo__wrapper * {
@@ -13,7 +14,7 @@ body {
   background: #fff;
   max-width: 600px;
   font-size: 32px;
-  margin: 24px auto;
+  margin: auto;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -41,6 +42,10 @@ body {
   width: 100%;
 }
 
+.todo__wrapper form {
+  margin-bottom: 0;
+}
+
 .todo__wrapper input {
   border: none;
   font-size: 32px;
@@ -50,10 +55,31 @@ body {
 
 .todo__task {
   display: flex;
-  justify-content: space-between;
+  line-height: 1.5;
 }
 
-.todo__task > span {
-  text-decoration: none;
+.todo__task_done .todo__task_text {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+.todo__task_text {
+  flex: 1;
+}
+
+.todo__task span:not(:first-of-type) {
   cursor: pointer;
+  margin-left: 16px;
+}
+
+.todo__task span:not(:first-of-type) {
+  color: green;
+}
+
+.todo__task_done span:not(:first-of-type) {
+  color: black;
+}
+
+.todo__task span:last-of-type {
+  color: red;
 }
