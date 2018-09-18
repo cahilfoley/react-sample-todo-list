@@ -42,6 +42,10 @@ body {
   width: 100%;
 }
 
+.todo__wrapper form {
+  margin-bottom: 0;
+}
+
 .todo__wrapper input {
   border: none;
   font-size: 32px;
