@@ -1,48 +1,73 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { Card, CardHeader, Stack } from '@mui/material'
-import { useState } from 'react'
 import TaskForm from './components/TaskForm'
 import TaskList from './components/TaskList'
-import { Task } from './types'
+import { useMemo } from 'react'
 
-export let nextID = 4
+const GetTodosDocument = gql`
+  query GetTodos {
+    todos {
+      id
+      title
+      done
+    }
+  }
+`
+
+const AddTodosDocument = gql`
+  mutation AddTodo($title: String!) {
+    addTodo(title: $title) {
+      id
+      title
+      done
+    }
+  }
+`
+
+const DeleteTodoDocument = gql`
+  mutation DeleteTodo($id: Int!) {
+    deleteTodo(id: $id) {
+      id
+      title
+    }
+  }
+`
 
 export function TodoList() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, title: 'Make a HTML template', done: true },
-    { id: 2, title: 'Learn React', done: false },
-    { id: 3, title: 'Identify components', done: false }
-  ])
+  const todosQuery = useQuery(GetTodosDocument)
+  const [addTodo, addTodoStatus] = useMutation(AddTodosDocument)
+  const [deleteTodo, deleteTodoStatus] = useMutation(DeleteTodoDocument)
 
   const handleAddTask = (title: string) => {
-    const newTask = { id: nextID++, title, done: false }
-    setTasks((tasks) => [...tasks, newTask])
+    addTodo({ variables: { title }, refetchQueries: [GetTodosDocument] })
   }
 
   const handleToggleTaskStatus = (id: number) => {
-    setTasks((tasks) =>
-      tasks.map((task) => {
-        if (task.id === id) {
-          return { ...task, done: !task.done }
-        }
-
-        return task
-      })
-    )
+    // Do it :)
   }
 
   const handleDeleteTask = (id: number) => {
-    setTasks((tasks) => tasks.filter((task) => task.id !== id))
+    deleteTodo({ variables: { id }, refetchQueries: [GetTodosDocument] })
   }
+
+  const tasks = useMemo(
+    () => todosQuery.data?.todos ?? [],
+    [todosQuery.data?.todos]
+  )
 
   return (
     <Card sx={{ minWidth: 350 }}>
       <CardHeader title="Todo List" />
 
-      <TaskList
-        tasks={tasks}
-        onToggleTaskStatus={handleToggleTaskStatus}
-        onDeleteTask={handleDeleteTask}
-      />
+      {todosQuery.loading ? (
+        'Loading'
+      ) : (
+        <TaskList
+          tasks={tasks}
+          onToggleTaskStatus={handleToggleTaskStatus}
+          onDeleteTask={handleDeleteTask}
+        />
+      )}
 
       <Stack sx={{ px: 2, pt: 2 }}>
         <TaskForm onSubmit={handleAddTask} />
